@@ -35,6 +35,20 @@ addForm.addEventListener('submit', e => {
 list.addEventListener('click', e => {
     if (e.target.classList.contains('delete')) {
         e.target.parentElement.remove();
+
+        const delToDO = e.toElement.previousElementSibling.innerHTML;
+        let todos = JSON.parse(localStorage.getItem('todos'));
+
+        const filtered = todos.filter(todo => {
+            if (todo === delToDO) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+        const todoString = JSON.stringify(filtered);
+        console.log(todoString);
+        localStorage.setItem('todos', todoString);
     }
 });
 
