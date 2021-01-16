@@ -3,7 +3,7 @@ const list = document.querySelector('.todos');
 const search = document.querySelector('.search input');
 
 const addToDoTemplate = todo => {
-
+    
     const html = `
         <li class="list-group-item d-flex justify-content-between align-item-center">
             <span>${todo}</span>
@@ -15,7 +15,17 @@ const addToDoTemplate = todo => {
 
 addForm.addEventListener('submit', e => {
     e.preventDefault();
+    let todos = [];
     const todo = addForm.add.value.trim();
+    if (localStorage.getItem('todos')) {
+        todos = JSON.parse(localStorage.getItem('todos'));
+        todos.push(todo);
+    } else {
+        todos.push(todo);
+    }
+    const todoString = JSON.stringify(todos);
+    localStorage.setItem('todos', todoString);
+
     if(todo.length) {      
         addToDoTemplate(todo);
         addForm.reset();
@@ -44,3 +54,19 @@ search.addEventListener('keyup', () => {
     const term = search.value.toLowerCase().trim();
     filertTODO(term);
 });
+
+
+if (localStorage.getItem('todos')) {
+
+    todos = JSON.parse(localStorage.getItem('todos'));
+    let html = '';
+    todos.forEach(todo => {
+        html += `
+        <li class="list-group-item d-flex justify-content-between align-item-center">
+            <span>${todo}</span>
+            <i class="far fa-trash-alt delete"></i>
+        </li> `;
+    });
+
+    list.innerHTML += html;
+}
